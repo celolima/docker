@@ -1,11 +1,11 @@
-version: "3.3"
+version: "3.9"
 services:
    db:
      image: postgres
      volumes:
        - ./postgresql/data:/var/lib/postgresql/data
      ports:
-       - "5432:5432"
+       - "5433:5432"
      restart: always
      container_name: postgresql
      environment:
@@ -51,3 +51,19 @@ services:
        - "80:3000"
      restart: always
      container_name: gogs
+
+   nexus:
+     image: sonatype/nexus3
+     volumes:
+       - ./nexus/data:/nexus-data
+     ports:
+       - "8081:8081"
+     restart: always
+     container_name: nexus
+
+   sonarqube:
+     image: sonatype/nexus3
+     ports:
+       - "9000:9000"
+     restart: always
+     container_name: sonarqube
