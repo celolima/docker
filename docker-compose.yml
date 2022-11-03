@@ -1,9 +1,9 @@
-version: "3.9"
+version: "3.3"
 services:
    db:
      image: postgres
      volumes:
-       - .\postgresql\data:/var/lib/postgresql/data
+       - ./postgresql/data:/var/lib/postgresql/data
      ports:
        - "5432:5432"
      restart: always
@@ -24,13 +24,13 @@ services:
        - "50000:50000"
      container_name: jenkins
      volumes:
-       - .\jenkins\data:/var/jenkins_home
+       - ./jenkins/data:/var/jenkins_home
      restart: always
 
    db-gogs:
      image: postgres
      volumes:
-       - .\gogs\postgresql\data:/var/lib/postgresql/data
+       - ./gogs/postgresql/data:/var/lib/postgresql/data
      ports:
        - "5432:5432"
      restart: always
@@ -41,14 +41,13 @@ services:
       POSTGRES_DB: gogs
 
    gogs:
-#     depends_on:
-#       - db-gogs
+     depends_on:
+      - db-gogs
      image: gogs/gogs
      volumes:
-       - .\gogs\data:/data
-#       - c:\Windows\System32\Drivers\etc\hosts:/etc/hosts
+       - ./gogs/data:/data
      ports:
        - "10022:22"
-       - "10080:3000"
+       - "80:3000"
      restart: always
      container_name: gogs
