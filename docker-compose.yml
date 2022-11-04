@@ -3,7 +3,7 @@ services:
    db:
      image: postgres
      volumes:
-       - ./postgresql/data:/var/lib/postgresql/data
+       - postgresql-data:/var/lib/postgresql/data
      ports:
        - "5433:5432"
      restart: always
@@ -24,13 +24,13 @@ services:
        - "50000:50000"
      container_name: jenkins
      volumes:
-       - ./jenkins/data:/var/jenkins_home
+       - jenkins-data:/var/jenkins_home
      restart: always
 
    db-gogs:
      image: postgres
      volumes:
-       - ./gogs/postgresql/data:/var/lib/postgresql/data
+       - gogs-postgresql-data:/var/lib/postgresql/data
      ports:
        - "5432:5432"
      restart: always
@@ -45,7 +45,7 @@ services:
       - db-gogs
      image: gogs/gogs
      volumes:
-       - ./gogs/data:/data
+       - gogs-data:/data
      ports:
        - "10022:22"
        - "80:3000"
@@ -55,15 +55,23 @@ services:
    nexus:
      image: sonatype/nexus3
      volumes:
-       - ./nexus/data:/nexus-data
+       - nexus-data:/nexus-data
      ports:
        - "8081:8081"
      restart: always
      container_name: nexus
+# 9ff61bad-4b72-425d-8cd5-688b475fac32     
 
    sonarqube:
-     image: sonatype/nexus3
+     image: sonarqube
      ports:
        - "9000:9000"
      restart: always
      container_name: sonarqube
+
+volumes:
+  nexus-data:
+  jenkins-data:
+  gogs-data:
+  gogs-postgresql-data:
+  postgresql-data:
